@@ -15,8 +15,16 @@ function scroll(){
     }
 }
 
-socket.on('connect', () => {
-    console.log('Connected to server');
+socket.on('connect', () => {       // falls der User bei Name oder Room einen leeren String eingibt mit hilfe von validation.js
+    var params = jQuery.deparam(window.location.search);
+    socket.emit('join', params, function (err) {
+        if (err) {
+            alert(err);
+            window.location.href = '/';
+        } else {
+            console.log('No Error');
+        }
+    });
 });
 
 socket.on('disconnect', () => {

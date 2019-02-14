@@ -70,5 +70,13 @@ Nachdem die  Befehle eingegeben wurden , kann man in der Konsole die Ergebnisse 
 - Hoyer 99 Stunden
 
 
+## Dokumentation
+
+Die Dokumentation kann automatisch über npm erstellt werden mit dem Befehl:
+
+    npm run doc
+
+Anschließend wird ein Ordner docs erzeugt, in dem sich die Dokumentationen befinden. Leider wurden in der index.html nicht alle Dokumentation korrekt verlinkt.
+
 
 

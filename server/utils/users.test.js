@@ -9,7 +9,7 @@ describe('Users', () => {
         users = new Users();
         users.users = [{
             id: '1',
-            name: 'Dominik',
+            name: 'Dominique',
             room: 'CSA Modul'
         }, {
             id: '2',

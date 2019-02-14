@@ -1,15 +1,17 @@
 var expect = require('expect');
 
 var {generateMessage, generateLocationMessage} = require('./message');
-
+/**
+ * Testet ob from und text strings sind
+ */
 describe('generateMessage', () => {
    it('should generate correct message object', () => {
-    var from = 'Jen';
+    var from = 'Dominique';
     var text = 'Some message';
     var message = generateMessage(from, text);
 
-    expect(typeof message.createdAt).toBe('number'); // bei diesen Versionen typeof und toBe anstatt toBeA
-    expect(message).toMatchObject({from, text}); // anstatt toInclude toMAtchObject
+    expect(typeof message.createdAt).toBe('number');
+    expect(message).toMatchObject({from, text});
    });
 });
 

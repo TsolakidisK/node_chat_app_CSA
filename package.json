@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
-    "test-watch": "nodemon --exec 'npm test'"
+    "test-watch": "nodemon --exec 'npm test'",
+    "doc": "jsdoc public server -r -d docs"
   },
   "engines": {
     "node": "11.4.0"
@@ -20,7 +21,6 @@
   },
   "devDependencies": {
     "expect": "^24.0.0",
-    "jsdoc": "^3.5.5",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9"
   }

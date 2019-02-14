@@ -1,4 +1,7 @@
-//! moment.js
+/**
+ * @module moment.js
+ * @see https://momentjs.com
+ */
 
 ;(function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :

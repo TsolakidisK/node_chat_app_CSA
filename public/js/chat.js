@@ -1,5 +1,8 @@
 var socket = io();
 
+/**
+ * Autoscrolling Funktion
+ */
 function scroll(){
     var messages = jQuery('#messages');
     var newMessage = messages.children('li:last-child')
@@ -15,7 +18,14 @@ function scroll(){
     }
 }
 
-socket.on('connect', () => {       // falls der User bei Name oder Room einen leeren String eingibt mit hilfe von validation.js
+/**
+ * Kommunikation mit server über das Schlüsselwort "connect"
+ * falls der User bei Name oder Room einen leeren String eingibt mit hilfe von validation.js
+ * @param {string} - Socket Schlüsselwort
+ * @param {function} - Behandelt die Server antwort
+ * @returns {boolean} - Man wird zur Startseite weitergeleitet oder man wird zum Chat verbunden
+ */
+socket.on('connect', () => {
     var params = jQuery.deparam(window.location.search);
     socket.emit('join', params, function (err) {
         if (err) {
@@ -27,10 +37,21 @@ socket.on('connect', () => {       // falls der User bei Name oder Room einen le
     });
 });
 
+/**
+ * Wird aufgerufen jedes mal wenn ein User den Raum verlässt
+ * @param {string} - socket Schlüsselwort
+ * @returns {string} - Consolenausgabe
+ */
 socket.on('disconnect', () => {
     console.log('Disconnected from server');
 });
 
+
+/**
+ * Sorgt dafür, dass die Liste "People" sich aktualisiert.
+ * @param {string} - socket Schlüsselwort
+ * @returns {string} - Aktualisierte Liste in Html Listenform
+ */
 socket.on('updateUserList', function (users) {
     var ol = jQuery('<ol></ol>');
 
@@ -41,6 +62,14 @@ socket.on('updateUserList', function (users) {
     jQuery('#users').html(ol);
 });
 
+
+/**
+ * Empfängt Socket-Nachrichten mit dem Schlüssel "newMessage".
+ * Erhält vom Server neue Nachricht eines Users und gibt diese im gestalteten Template an die HTML-Seite weiter.
+ * Ausserdem wird Zeit formattiert.
+ * @param {string} - socket Schlüsselwort
+ * @returns {string} - Aktualisierte Ausgabe(Wer, Wann, Was).
+ */
 socket.on('newMessage', function(message) {
     var formattedTime = moment(message.createdAt).format('kk:mm');
     var template = jQuery('#message-template').html();
@@ -54,6 +83,13 @@ socket.on('newMessage', function(message) {
     scroll();
 });
 
+/**
+ * Empfängt Socket-Nachrichten mit dem Schlüssel "newMessageLocation".
+ * Erhält vom Server neue Nachricht eines Users über seine Location gibt diese im gestalteten Template an die HTML-Seite weiter.
+ * Ausserdem wird Zeit formattiert.
+ * @param {string} - socket Schlüsselwort
+ * @returns {string} - Aktualisierte Ausgabe(Wer, Wann, Was).
+ */
 socket.on('newLocationMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('kk:mm');
     var template = jQuery('#location-message-template').html();
@@ -67,6 +103,12 @@ socket.on('newLocationMessage', function (message) {
     scroll();
 });
 
+/**
+ * Schickt eingebene Nachricht des Users an den Server.
+ * e.preventDefault verhindert, dass leere Nachricht an den Server weitergeschickt wird.
+ * @param {string} - HTML-ID des HTML-Inputs
+ * @param {function} - .on schickt über 'submit' die Nachricht ab.
+ */
 jQuery('#message-form').on('submit', function (e) {
     e.preventDefault();
 
@@ -80,6 +122,15 @@ jQuery('#message-form').on('submit', function (e) {
     });
 });
 
+/**
+ * Handler für das Klicken aud den Location-Button.
+ * Sendet dann über jQuery eine Anfrage an den Server den Standort abzufragen (über API).
+ * Falls dies länger dauert, wird Ladenachricht angezeigt.
+ * in getCurrentPosition wird Anschließend LocationMessage an den Server abgeschickt.
+ * Falls keine Koordinaten ermittelt werden konnten, wird Fehlermeldung ausgegeben.
+ * @param {string} - socket Schlüsselwort
+ * @returns {string} - Aktualisierte Ausgabe(Wer, Wann, Was).
+ */
 var locationButton = jQuery('#send-location');
 locationButton.on('click', function () {
     if (!navigator.geolocation) {
